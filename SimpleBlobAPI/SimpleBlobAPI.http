@@ -1,0 +1,6 @@
+@SimpleBlobAPI_HostAddress = http://localhost:5279
+
+GET {{SimpleBlobAPI_HostAddress}}/blob/
+Accept: application/json
+
+###
