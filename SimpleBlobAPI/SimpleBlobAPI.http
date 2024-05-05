@@ -4,3 +4,8 @@ GET {{SimpleBlobAPI_HostAddress}}/blob/
 Accept: application/json
 
 ###
+
+POST {{SimpleBlobAPI_HostAddress}}/submitblob/
+Accept: application/json
+
+###

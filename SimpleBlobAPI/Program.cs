@@ -1,7 +1,4 @@
-using Azure.Storage;
-using Azure.Storage.Blobs;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using SimpleBlobAPI;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,22 +20,17 @@ app.UseHttpsRedirection();
 
 app.MapGet("/blob", async () =>
 {
-    var blobClient = new BlobClient(
-        new Uri("https://devstorageclimavision.blob.core.windows.net/backup-v002/weather.json"),
-        new StorageSharedKeyCredential("<STORAGE-ACCOUNT-NAME>", "<STORAGE-ACCOUNT-KEY>"));
-
-    var localFilePath = "C:\\Temp\\GR2Historical_Test_Files\\";
-    var fileToSave = "downloadedBlob.json";
-
-    // Check if the blob exists
-    if (await blobClient.ExistsAsync())
-    {
-        // Download the blob to a local file
-        await blobClient.DownloadToAsync(Path.Combine(localFilePath, fileToSave));
-        Console.WriteLine($"Blob downloaded to {localFilePath}.");
-    }
+    await BlobStorageHelper.DownloadBlobAsync();
 })
 .WithName("GetBlob")
+.WithOpenApi();
+
+app.MapPost("/submitBlob", async (string containerName) =>
+{
+    // Pass in gr2-historical-test-container for containerName
+    await BlobStorageHelper.UploadBlobAsync(containerName);
+})
+.WithName("PostSubmitBlob")
 .WithOpenApi();
 
 app.Run();
